@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage>
     return [
       Text(
         "passwordlo",
-        style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
       ),
       Gaps.vGap16,
       MyTextField(
@@ -84,9 +84,9 @@ class _LoginPageState extends State<LoginPage>
         alignment: Alignment.center,
         child: GestureDetector(
           child: Text(
-            "noAccountRegisterLink",
-            key: const Key("noAccountRegisterLink"),
-            style: TextStyle(color: Theme.of(context).primaryColor),
+            "forgotPassword",
+            key: const Key("forgotPassword"),
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           onTap: () => NatigatorUtils.push(context, LoginRouter.registerPage),
         ),

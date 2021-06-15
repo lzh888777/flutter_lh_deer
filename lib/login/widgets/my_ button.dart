@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lh_deer/res/colors.dart';
+import 'package:flutter_lh_deer/res/dimens.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class MyButton extends StatelessWidget {
   const MyButton({
     Key? key,
     this.text = "",
-    this.fontSize = 18.0,
+    this.fontSize = Dimens.font_sp18,
     this.textColor,
     this.disabledTextColor,
     this.backgroundColor,
@@ -61,6 +62,16 @@ class MyButton extends StatelessWidget {
           ),
         ),
         side: MaterialStateProperty.all<BorderSide>(side),
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return disabledBackgroundColor ??
+                (isDark
+                    ? Colours.dark_button_disabled
+                    : Colours.button_disabled);
+          }
+          return backgroundColor ??
+              (isDark ? Colours.dark_app_main : Colours.app_main);
+        }),
       ),
     );
   }

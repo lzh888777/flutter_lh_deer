@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_lh_deer/login/login_router.dart';
+import 'package:flutter_lh_deer/res/constant.dart';
 import 'package:flutter_lh_deer/routers/fluro_navigator.dart';
+import 'package:flutter_lh_deer/utils/device.dart';
 import 'package:flutter_lh_deer/utils/imageUtils.dart';
 import 'package:flutter_lh_deer/widegts/load_image.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:sp_util/sp_util.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -15,17 +21,33 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State {
   int _status = 0;
   final List<String> _guideList = ['app_start_1', 'app_start_2', 'app_start_3'];
+  StreamSubscription? _subscription;
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _initSplash();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      await SpUtil.getInstance();
+      await Device.initDeviceInfo();
+      if (SpUtil.getBool(Constant.keyGuide, defValue: true)!) {
+        _guideList.forEach((element) {
+          precacheImage(
+              ImageUtils.getAssetImage(element, format: ImageFormat.webp),
+              context);
+        });
+      }
+      _initSplash();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Material(
       // color: context.backgroundColor,
       child: _buildWidget(),
@@ -34,7 +56,7 @@ class _SplashPageState extends State {
 
   Widget _buildWidget() {
     if (_status == 0) {
-      return FractionallyAlignedSizedBox(
+      return const FractionallyAlignedSizedBox(
         heightFactor: 0.3,
         widthFactor: 0.33,
         leftFactor: 0.33,
@@ -70,13 +92,24 @@ class _SplashPageState extends State {
   }
 
   void _initSplash() {
-    _initGuide();
+    _subscription =
+        Stream.value(1).delay(const Duration(milliseconds: 1500)).listen((_) {
+      if (SpUtil.getBool(Constant.keyGuide, defValue: true)! ||
+          Constant.isDriverTest) {
+        SpUtil.putBool(Constant.keyGuide, false);
+        _initGuide();
+      } else {
+        _goLogin();
+      }
+    });
   }
 
   void _goLogin() {
+    // ignore: avoid_print
     print("go login");
     NavigatorUtils.push(context, LoginRouter.loginPage, replace: true);
 
+    // ignore: avoid_print
     print("go login--");
   }
 }
