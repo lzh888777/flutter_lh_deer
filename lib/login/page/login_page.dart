@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_lh_deer/login/widgets/my_%20button.dart';
 import 'package:flutter_lh_deer/login/widgets/my_text_field.dart';
 import 'package:flutter_lh_deer/res/gaps.dart';
+import 'package:flutter_lh_deer/routers/fluro_navigator.dart';
 import 'package:flutter_lh_deer/utils/change_notifier_manage.dart';
 import 'package:flutter_lh_deer/widegts/my_app_bar.dart';
 import 'package:flutter_lh_deer/widegts/my_scroll_view.dart';
@@ -41,19 +42,24 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: MyAppBar(),
+        appBar: MyAppBar(
+          isBack: false,
+          actionName: "Verrification Code login",
+          onPressed: () =>
+              NavigatorUtils.push(context, LoginRouter.smsLoginPage),
+        ),
         body: MyScrollView(
             children: _buildBody,
-            padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0))
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0))
         // keyboardConfig: Util,),
         );
   }
 
   List<Widget> get _buildBody {
     return [
-      Text(
-        "passwordlo",
-        style: const TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+      const Text(
+        "Password Login",
+        style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
       ),
       Gaps.vGap16,
       MyTextField(
@@ -81,16 +87,29 @@ class _LoginPageState extends State<LoginPage>
         text: "login",
       ),
       Container(
-        alignment: Alignment.center,
+        height: 40.0,
+        alignment: Alignment.centerRight,
         child: GestureDetector(
           child: Text(
-            "forgotPassword",
+            "Forgot Password",
             key: const Key("forgotPassword"),
             style: Theme.of(context).textTheme.subtitle2,
           ),
-          onTap: () => NatigatorUtils.push(context, LoginRouter.registerPage),
+          onTap: () =>
+              NatigatorUtils.push(context, LoginRouter.resetPasswordPage),
         ),
-      )
+      ),
+      Gaps.vGap16,
+      Container(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            child: Text(
+              "No account yet? Register now",
+              key: const Key("noAccountRegister"),
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onTap: () => NavigatorUtils.push(context, LoginRouter.registerPage),
+          ))
     ];
   }
 

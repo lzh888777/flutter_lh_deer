@@ -105,11 +105,6 @@ class _SplashPageState extends State {
   }
 
   void _goLogin() {
-    // ignore: avoid_print
-    print("go login");
     NavigatorUtils.push(context, LoginRouter.loginPage, replace: true);
-
-    // ignore: avoid_print
-    print("go login--");
   }
 }
