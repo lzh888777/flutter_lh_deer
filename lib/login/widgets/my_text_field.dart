@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lh_deer/login/widgets/my_%20button.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_lh_deer/res/colors.dart';
 import 'package:flutter_lh_deer/res/gaps.dart';
 import 'package:flutter_lh_deer/utils/device.dart';
 import 'package:flutter_lh_deer/widegts/load_image.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MyTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -140,12 +140,12 @@ class _MyTextFieldState extends State<MyTextField> {
         fontSize: 12.0,
         text: _clickable ? "send vc code" : '（$_currentSecond s)',
         textColor: themeData.primaryColor,
-        disabledTextColor: Colors.transparent,
-        disabledBackgroundColor:
-            isDark ? Colours.dark_text_gray : Colours.text_gray_c,
+        disabledTextColor: Colors.white,
+        disabledBackgroundColor: isDark ? Colours.red : Colours.text_gray_c,
         radius: 1.0,
         minHeight: 26.0,
         minWidth: 76.0,
+        backgroundColor: Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         side: BorderSide(
           color: _clickable ? themeData.primaryColor : Colors.transparent,
@@ -192,7 +192,24 @@ class _MyTextFieldState extends State<MyTextField> {
     }
   }
 
-  void _getVCode() {}
+  void _getVCode() async {
+    final bool isSuccess = await widget.getVCode!();
+    if (isSuccess != null && isSuccess) {
+      setState(() {
+        _currentSecond = _second;
+        _clickable = false;
+      });
+
+      _subscription = Stream.periodic(const Duration(seconds: 1), (int i) => i)
+          .take(_second)
+          .listen((int i) {
+        setState(() {
+          _currentSecond = _second - i - 1;
+          _clickable = _currentSecond < 1;
+        });
+      });
+    }
+  }
 
   List<TextInputFormatter> get _myTextFieldInputFormatter {
     if (widget.keyboardType == TextInputType.number ||

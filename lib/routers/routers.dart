@@ -5,6 +5,7 @@ import 'package:flutter_lh_deer/home/webview_page.dart';
 import 'package:flutter_lh_deer/login/login_router.dart';
 import 'package:flutter_lh_deer/routers/i_router.dart';
 import 'package:flutter_lh_deer/routers/not_found_page.dart';
+import 'package:flutter_lh_deer/store/store_router.dart';
 
 class Routes {
   static String home = '/home';
@@ -31,6 +32,7 @@ class Routes {
     _listRouter.clear();
 
     _listRouter.add(LoginRouter());
+    _listRouter.add(StoreRouter());
 
     _listRouter.forEach((element) {
       element.initRouter(router);

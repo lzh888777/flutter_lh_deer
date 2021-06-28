@@ -54,7 +54,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final Widget action = actionName.isNotEmpty
         ? Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: Theme(
                 data: Theme.of(context).copyWith(
                     buttonTheme: const ButtonThemeData(

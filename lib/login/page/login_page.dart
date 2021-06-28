@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lh_deer/login/widgets/my_%20button.dart';
 import 'package:flutter_lh_deer/login/widgets/my_text_field.dart';
+import 'package:flutter_lh_deer/res/constant.dart';
 import 'package:flutter_lh_deer/res/gaps.dart';
 import 'package:flutter_lh_deer/routers/fluro_navigator.dart';
+import 'package:flutter_lh_deer/store/store_router.dart';
 import 'package:flutter_lh_deer/utils/change_notifier_manage.dart';
 import 'package:flutter_lh_deer/widegts/my_app_bar.dart';
 import 'package:flutter_lh_deer/widegts/my_scroll_view.dart';
+import 'package:sp_util/sp_util.dart';
 
 import '../login_router.dart';
 
@@ -27,7 +30,7 @@ class _LoginPageState extends State<LoginPage>
   final FocusNode _nodeText2 = FocusNode();
   bool _clickable = false;
 
-  get NatigatorUtils => null;
+  // get NatigatorUtils => null;
 
   @override
   void initState() {
@@ -93,10 +96,10 @@ class _LoginPageState extends State<LoginPage>
           child: Text(
             "Forgot Password",
             key: const Key("forgotPassword"),
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           onTap: () =>
-              NatigatorUtils.push(context, LoginRouter.resetPasswordPage),
+              NavigatorUtils.push(context, LoginRouter.resetPasswordPage),
         ),
       ),
       Gaps.vGap16,
@@ -124,7 +127,10 @@ class _LoginPageState extends State<LoginPage>
     };
   }
 
-  void _login() {}
+  void _login() {
+    SpUtil.putString(Constant.phone, _nameController.text);
+    NavigatorUtils.push(context, StoreRouter.auditPage);
+  }
 
   void _verify() {
     final String name = _nameController.text;
