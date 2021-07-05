@@ -1,5 +1,4 @@
-import 'dart:html';
-
+import 'dart:io';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,11 +19,11 @@ class SelectedImage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _SelectedImageState();
+    return SelectedImageState();
   }
 }
 
-class _SelectedImageState extends State<SelectedImage> {
+class SelectedImageState extends State<SelectedImage> {
   final ImagePicker _picker = ImagePicker();
   ImageProvider? _imageProvider;
   PickedFile? pickedFile;
@@ -35,9 +34,9 @@ class _SelectedImageState extends State<SelectedImage> {
           await _picker.getImage(source: ImageSource.gallery, maxWidth: 800);
       if (pickedFile != null) {
         if (Device.isWeb) {
-          _imageProvider = NetworkImage(pickedFile);
+          _imageProvider = NetworkImage(pickedFile!.path);
         } else {
-          _imageProvider = FileImage(File(pickedFile.path));
+          _imageProvider = FileImage(File(pickedFile!.path));
         }
       } else {
         _imageProvider = null;
@@ -77,7 +76,7 @@ class _SelectedImageState extends State<SelectedImage> {
     );
 
     if (widget.heroTag != null && !Device.isWeb) {
-      image = Hero(tag: widget.heroTag, child: image);
+      image = Hero(tag: widget.heroTag!, child: image);
     }
     return Semantics(
       label: "选择照片",

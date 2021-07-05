@@ -24,7 +24,8 @@ class StoreAuditPage extends StatefulWidget {
 }
 
 class _StoreAuditPageState extends State<StoreAuditPage> {
-  final GlobalKey<_SelectedImageState> _imageGlobalKey = 
+  final GlobalKey<SelectedImageState> _imageGlobalKey =
+      GlobalKey<SelectedImageState>();
   final FocusNode _nodeText1 = FocusNode();
   final FocusNode _nodeText2 = FocusNode();
   final FocusNode _nodeText3 = FocusNode();
@@ -82,9 +83,9 @@ class _StoreAuditPageState extends State<StoreAuditPage> {
       Gaps.vGap16,
       Center(
         child: SelectedImage(
-          key: _imageg,
+          key: _imageGlobalKey,
         ),
-      )
+      ),
       Gaps.vGap10,
       Center(
         child: Text("店主手持身份证或营业执照",
